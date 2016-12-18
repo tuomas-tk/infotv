@@ -4,28 +4,26 @@
   "private": true,
   "author": "Tuomas Karjalainen <tuomas.karj@outlook.com>",
   "dependencies": {
-    "body-parser": "~1.15.2",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.2.0",
-    "express": "~4.14.0",
-    "mongodb": "^2.2.14",
-    "monk": "^3.1.3",
-    "morgan": "~1.7.0",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "~2.3.0",
-    "vue": "^2.1.4",
-    "webpack": "^1.14.0",
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.9",
     "babel-preset-es2015": "^6.18.0",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^2.4.0",
-    "vue-loader": "^10.0.2",
-    "vue-template-compiler": "^2.1.4",
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "css-loader": "^0.26.1",
+    "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "morgan": "~1.7.0",
+    "pg": "^6.1.2",
     "pug": "^2.0.0-beta6",
     "pug-html-loader": "^1.0.9",
     "pug-loader": "^2.3.0",
-    "css-loader": "^0.26.1"
+    "serve-favicon": "~2.3.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0",
+    "vue": "^2.1.4",
+    "vue-loader": "^10.0.2",
+    "vue-template-compiler": "^2.1.4",
+    "webpack": "^1.14.0"
   },
   "scripts": {
     "lint:server": "eslint server/routes",
@@ -43,8 +41,6 @@
     "browser-sync": "^2.18.2",
     "eslint": "^3.12.0",
     "eslint-plugin-html": "^1.7.0",
-    "onchange": "^3.2.0",
-    "parallelshell": "^2.0.0",
-    "style-loader": "^0.13.1"
+    "parallelshell": "^2.0.0"
   }
 }

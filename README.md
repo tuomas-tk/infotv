@@ -1,6 +1,7 @@
 # infotv
 
-Author: Tuomas Karjalainen
+**Backend:** Node.js with Express and PostgreSQL
+**Frontend:** Vue.js (using Stylus and Pug)
 
 
 
@@ -34,3 +35,13 @@ _Run with `npm run [COMMAND]`_
 * `start:dev`
     * Run `npm run server` AND `npm run serve` AND `npm run webpack:watch`
     * **This is what you usually use when developing**
+
+
+### Migrations
+
+We use [db-migrate](https://www.npmjs.com/package/db-migrate) to make changes to the database structure. Check the [documentation](https://db-migrate.readthedocs.io/en/latest/) for additional information.
+
+In a nutshell, you can find the db-migrate executable from `./node_modules/db-migrate/bin/db-migrate`. With it you can:
+1. create migrations: `./node_modules/db-migrate/bin/db-migrate create [migrationname]`
+2. execute the migrations: `./node_modules/db-migrate/bin/db-migrate up`
+2. reverse the last migration: `./node_modules/db-migrate/bin/db-migrate down`

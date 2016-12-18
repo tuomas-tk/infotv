@@ -23,7 +23,8 @@
     "webpack:watch": "webpack --watch",
     "serve": "browser-sync start --proxy localhost:3000 --files 'client/build/js/*.js', 'server/routes/*.js', server/views/*.pug",
     "server": "node ./bin/www",
-    "start": "parallelshell 'npm run server' 'npm run serve' 'npm run webpack:watch'"
+    "start:dev": "parallelshell 'npm run server' 'npm run serve' 'npm run webpack:watch'",
+    "start": "npm run server"
   },
   "devDependencies": {
     "babel-core": "^6.20.0",

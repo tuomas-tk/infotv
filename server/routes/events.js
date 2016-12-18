@@ -39,7 +39,7 @@ router.post('/create', (req, res) => {
         done();
         if (err) {
           console.error(err);
-          return res.send("Error " + err);
+          return res.status(500).json({success: false, data: err});
         } else {
           return res.json({
             success: true

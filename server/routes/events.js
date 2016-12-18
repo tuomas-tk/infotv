@@ -9,7 +9,8 @@ router.get('/list', function(req, res) {
     client.query('SELECT * FROM events', function(err, result) {
       done();
       if (err) {
-        console.error(err); response.send("Error " + err);
+        console.error(err);
+        res.send("Error " + err);
       } else {
         res.json({results: result.rows});
       }

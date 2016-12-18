@@ -45,6 +45,6 @@
     "eslint-plugin-html": "^1.7.0",
     "onchange": "^3.2.0",
     "parallelshell": "^2.0.0",
-    "style-loader": "^0.13.1",
+    "style-loader": "^0.13.1"
   }
 }

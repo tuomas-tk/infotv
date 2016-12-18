@@ -4,6 +4,11 @@
 
 **Frontend:** Vue.js (using Stylus and Pug)
 
+---
+
+## This is a school project, please contact before contributing!
+
+---
 
 
 ## Developing

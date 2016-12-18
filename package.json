@@ -13,7 +13,8 @@
     "morgan": "~1.7.0",
     "pug": "^2.0.0-beta6",
     "serve-favicon": "~2.3.0",
-    "vue": "^2.1.4"
+    "vue": "^2.1.4",
+    "webpack": "^1.14.0"
   },
   "scripts": {
     "lint:server": "eslint server/routes",
@@ -24,7 +25,8 @@
     "serve": "browser-sync start --proxy localhost:3000 --files 'client/build/js/*.js', 'server/routes/*.js', server/views/*.pug",
     "server": "node ./bin/www",
     "start:dev": "parallelshell 'npm run server' 'npm run serve' 'npm run webpack:watch'",
-    "start": "npm run server"
+    "start": "npm run server",
+    "postinstall": "npm run webpack"
   },
   "devDependencies": {
     "babel-core": "^6.20.0",
@@ -43,7 +45,6 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^2.4.0",
     "vue-loader": "^10.0.2",
-    "vue-template-compiler": "^2.1.4",
-    "webpack": "^1.14.0"
+    "vue-template-compiler": "^2.1.4"
   }
 }

@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
   return db.createTable('announcements', {
-    id: {type: 'int', primaryKey: true},
+    id: {type: 'serial', primaryKey: true},
     title: 'string',
     content: 'string'
   });

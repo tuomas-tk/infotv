@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
   return db.createTable('events', {
-    id: {type: 'int', primaryKey: true},
+    id: {type: 'serial', primaryKey: true},
     title: 'string'
   });
 };
@@ -24,6 +24,7 @@ exports.up = function(db) {
 exports.down = function(db) {
   return db.dropTable('events');
 };
+
 
 exports._meta = {
   "version": 1

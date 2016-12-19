@@ -41,6 +41,21 @@ export default {
           status: 'info',
           title: 'OPKH kokous',
           content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
+        },
+        {
+          status: 'info',
+          title: 'OPKH kokous',
+          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
+        },
+        {
+          status: 'info',
+          title: 'OPKH kokous',
+          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
+        },
+        {
+          status: 'info',
+          title: 'OPKH kokous',
+          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
         }
       ]
     };
@@ -55,7 +70,7 @@ html, body, #app
   height: 100%
   overflow: hidden
 
-body
+#app
   font-family: 'Roboto', sans-serif
   font-size: 2.4vh
 

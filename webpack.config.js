@@ -1,8 +1,11 @@
 module.exports = {
-  entry: './client/src/main.js',
+  entry: {
+    admin: './client/src/admin.js',
+    infoscreen: './client/src/infoscreen.js'
+  },
   output: {
     path: './client/build/js',
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
   module: {
     loaders: [

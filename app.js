@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./server/routes/index');
 var events = require('./server/routes/events');
+var announcements = require('./server/routes/announcements');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'client/public')));
 
 app.use('/', index);
 app.use('/api/events', events);
+app.use('/api/announcements', announcements);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

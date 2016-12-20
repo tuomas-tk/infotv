@@ -2,7 +2,7 @@ var express = require('express');
 var pg = require('pg');
 var router = express.Router();
 
-/* GET all events. */
+/* GET all announcements. */
 router.get('/list', function(req, res) {
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -13,7 +13,7 @@ router.get('/list', function(req, res) {
         data: err
       });
     } else {
-      client.query('SELECT * FROM events', function(err, result) {
+      client.query('SELECT * FROM announcements', function(err, result) {
         done();
         if (err) {
           console.error(err);
@@ -37,10 +37,6 @@ router.get('/list', function(req, res) {
 
 router.put('/create', (req, res) => {
 
-  const data = {
-    'title': req.body.title
-  };
-
   console.log(data);
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -52,7 +48,7 @@ router.put('/create', (req, res) => {
       });
 
     } else {
-      client.query('INSERT INTO events(title) values($1)', [data.title], function(err, result) {
+      client.query('INSERT INTO announcements(title, content) values($1, $1)', [req.body.title, req.body.content], function(err, result) {
         done();
         if (err) {
           console.error(err);
@@ -80,7 +76,7 @@ router.post('/edit', (req, res) => {
       return res.status(500).json({success: false, data: err});
 
     } else {
-      client.query('UPDATE events SET title = $1 WHERE id = $2', [req.body.title, req.body.id], function(err, result) {
+      client.query('UPDATE announcements SET title = $1, content = $2 WHERE id = $3', [req.body.title, req.body.content, req.body.id], function(err, result) {
         done();
         if (err) {
           console.error(err);
@@ -91,7 +87,7 @@ router.post('/edit', (req, res) => {
         } else if (result.rowCount != 1) {
           return res.status(404).json({
             success: false,
-            data: 'Event not found'
+            data: 'Announcement not found'
           });
         } else {
           return res.json({
@@ -114,7 +110,7 @@ router.delete('/delete', (req, res) => {
       return res.status(500).json({success: false, data: err});
 
     } else {
-      client.query('DELETE FROM events WHERE id=$1', [req.body.id], function(err, result) {
+      client.query('DELETE FROM announcements WHERE id=$1', [req.body.id], function(err, result) {
         done();
         if (err) {
           console.error(err);
@@ -125,7 +121,7 @@ router.delete('/delete', (req, res) => {
         } else if (result.rowCount != 1) {
           return res.status(404).json({
             success: false,
-            data: 'Event not found'
+            data: 'Announcement not found'
           });
         } else {
           return res.json({

@@ -1,5 +1,9 @@
 # infotv
 
+[![Build Status](https://travis-ci.org/tuomas-tk/infotv.svg?branch=master)](https://travis-ci.org/tuomas-tk/infotv)
+
+---
+
 **Backend:** Node.js with Express and PostgreSQL
 
 **Frontend:** Vue.js (using Stylus and Pug)

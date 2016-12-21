@@ -37,8 +37,6 @@ router.get('/list', function(req, res) {
 
 router.put('/create', (req, res) => {
 
-  console.log(data);
-
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) {
       done();

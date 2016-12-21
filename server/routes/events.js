@@ -41,8 +41,6 @@ router.put('/create', (req, res) => {
     'title': req.body.title
   };
 
-  console.log(data);
-
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) {
       done();

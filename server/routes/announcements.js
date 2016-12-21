@@ -46,7 +46,7 @@ router.put('/create', (req, res) => {
       });
 
     } else {
-      client.query('INSERT INTO announcements(title, content) values($1, $1)', [req.body.title, req.body.content], function(err, result) {
+      client.query('INSERT INTO announcements(title, content) values($1, $2)', [req.body.title, req.body.content], function(err, result) {
         done();
         if (err) {
           console.error(err);

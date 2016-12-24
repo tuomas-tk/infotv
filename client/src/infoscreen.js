@@ -49,7 +49,7 @@ var vue = new Vue({
           t.data.error += 'Server error 21';
         });
 
-      setTimeout(vue.load(), 20000);
+      setTimeout(function() { vue.load() }, 20000);
 
     }
   }

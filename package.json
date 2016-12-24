@@ -26,7 +26,8 @@
     "vue-loader": "^10.0.2",
     "vue-router": "^2.1.1",
     "vue-template-compiler": "^2.1.4",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "whatwg-fetch": "^2.0.1"
   },
   "scripts": {
     "lint:server": "eslint server/routes",

@@ -37,8 +37,6 @@ router.get('/list', function(req, res) {
 
 router.put('/create', (req, res) => {
 
-  console.log(data);
-
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) {
       done();
@@ -48,7 +46,7 @@ router.put('/create', (req, res) => {
       });
 
     } else {
-      client.query('INSERT INTO announcements(title, content) values($1, $1)', [req.body.title, req.body.content], function(err, result) {
+      client.query('INSERT INTO announcements(title, content) values($1, $2)', [req.body.title, req.body.content], function(err, result) {
         done();
         if (err) {
           console.error(err);

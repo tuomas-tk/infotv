@@ -8,7 +8,9 @@ const url = require('url');
 const params = url.parse(process.env.DATABASE_URL);
 const auth = params.auth.split(':');
 
-const ssl = !(process.env.POSTGRESQLNOSSL==true);
+const ssl = !(process.env.POSTGRESQLNOSSL=='true');
+
+console.log("SSL: " + ssl);
 
 const config = {
   user: auth[0],

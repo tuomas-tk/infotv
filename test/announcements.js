@@ -14,14 +14,15 @@ describe('Announcements', () => {
 
     beforeEach((done) => { // Create some data to the database
 
-      pg.connect(process.env.DATABASE_URL, function(err, client) {
+      pg.connect(process.env.DATABASE_URL, function(err, client, doneConnect) {
         if (err) {
           done(err);
-
+          doneConnect();
         } else {
           client.query('DELETE FROM announcements', function(err, result) {
             if (err) {
               done(err);
+              doneConnect();
 
             } else {
               client.query(' \
@@ -35,6 +36,7 @@ describe('Announcements', () => {
                 } else {
                   done();
                 }
+                doneConnect();
               });
             }
           });
@@ -140,17 +142,17 @@ describe('Announcements', () => {
 
 
     it('should NOT POST an edit to inexisting announcement', (done) => {
-      var event_id;
+      var announcement_id;
 
       chai.request(server) // Get the id of the inexisting announcement
       .get('/api/announcements/list')
       .end((err, res) => {
-        event_id = res.body.data[1].id + 1;
+        announcement_id = res.body.data[1].id + 1;
 
 
         chai.request(server) // Try to edit the inexisting announcement
         .post('/api/announcements/edit')
-        .send({id: event_id, title: 'Edited title', content: 'Edited content'})
+        .send({id: announcement_id, title: 'Edited title', content: 'Edited content'})
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.an('object');

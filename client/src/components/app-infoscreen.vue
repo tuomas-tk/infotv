@@ -4,7 +4,7 @@
     #news-container
       //img.full(src='/img/infotv.jpg')
 
-      news-item(v-for='item in items', :item='item')
+      news-item(v-for='item in data.announcements', :item='item')
 
   #sidebar
     clock
@@ -15,18 +15,23 @@
 </template>
 
 <script>
+import 'whatwg-fetch';
+
 import Clock    from './clock.vue';
 import NewsItem from './news-item.vue';
 
-export default {
+var component = {
   components: {
     'clock': Clock,
     'news-item': NewsItem
   },
+  props: [
+    'data'
+  ],
   data: function () {
     return {
       message: 'Hello Vue!',
-      items: [
+      items: [/*
         {
           status: 'important',
           title: 'Muistakaa!',
@@ -57,10 +62,15 @@ export default {
           title: 'OPKH kokous',
           content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
         }
-      ]
+      */]
     };
   }
 };
+
+
+export default component;
+
+
 </script>
 
 <style>

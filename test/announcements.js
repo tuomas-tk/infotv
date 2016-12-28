@@ -25,9 +25,9 @@ describe('Announcements', () => {
 
           } else {
             client.query(' \
-            INSERT INTO announcements (title, content) VALUES \
-            (\'Fantastic title\', \'Fantastic content\'), \
-            (\'Another fantastic title\', \'Another fantastic content\')', function(err, result) {
+            INSERT INTO announcements (title, content, status, sort) VALUES \
+            (\'Fantastic title\', \'Fantastic content\', \'important\', 1), \
+            (\'Another fantastic title\', \'Another fantastic content\', \'normal\', 2)', function(err, result) {
 
               if (err) {
                 done(err);
@@ -57,9 +57,13 @@ describe('Announcements', () => {
       res.body.data[0].should.be.an('object');
       res.body.data[0].title.should.equal('Fantastic title');
       res.body.data[0].content.should.equal('Fantastic content');
+      res.body.data[0].status.should.equal('important');
+      res.body.data[0].sort.should.equal(1);
       res.body.data[1].should.be.an('object');
       res.body.data[1].title.should.equal('Another fantastic title');
       res.body.data[1].content.should.equal('Another fantastic content');
+      res.body.data[1].status.should.equal('normal');
+      res.body.data[1].sort.should.equal(2);
       done();
     });
   });
@@ -68,7 +72,11 @@ describe('Announcements', () => {
   it('should PUT a new announcement', (done) => {
     chai.request(server)
     .put('/api/announcements/create')
-    .send({title: 'Created title', content: 'Created content'})
+    .send({
+      title: 'Created title',
+      content: 'Created content',
+      status: 'info'
+    })
     .end((err, res) => {
       res.should.have.status(200);
       res.body.should.be.an('object');
@@ -86,12 +94,18 @@ describe('Announcements', () => {
         res.body.data[0].should.be.an('object');
         res.body.data[0].title.should.equal('Fantastic title');
         res.body.data[0].content.should.equal('Fantastic content');
+        res.body.data[0].status.should.equal('important');
+        res.body.data[0].sort.should.equal(1);
         res.body.data[1].should.be.an('object');
         res.body.data[1].title.should.equal('Another fantastic title');
         res.body.data[1].content.should.equal('Another fantastic content');
+        res.body.data[1].status.should.equal('normal');
+        res.body.data[1].sort.should.equal(2);
         res.body.data[2].should.be.an('object');
         res.body.data[2].title.should.equal('Created title');
         res.body.data[2].content.should.equal('Created content');
+        res.body.data[2].status.should.equal('info');
+        res.body.data[2].sort.should.equal(3);
 
         done();
       });
@@ -111,7 +125,13 @@ describe('Announcements', () => {
 
       chai.request(server) // Edit the announcement to "Edited"
       .post('/api/announcements/edit')
-      .send({id: announcement_id, title: 'Edited title', content: 'Edited content'})
+      .send({
+        id: announcement_id,
+        title: 'Edited title',
+        content: 'Edited content',
+        status: 'info',
+        sort: 3
+      })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.an('object');
@@ -129,9 +149,13 @@ describe('Announcements', () => {
           res.body.data[0].should.be.an('object');
           res.body.data[0].title.should.equal('Fantastic title');
           res.body.data[0].content.should.equal('Fantastic content');
+          res.body.data[0].status.should.equal('important');
+          res.body.data[0].sort.should.equal(1);
           res.body.data[1].should.be.an('object');
           res.body.data[1].title.should.equal('Edited title');
           res.body.data[1].content.should.equal('Edited content');
+          res.body.data[1].status.should.equal('info');
+          res.body.data[1].sort.should.equal(3);
           done();
 
         });
@@ -170,9 +194,13 @@ describe('Announcements', () => {
           res.body.data[0].should.be.an('object');
           res.body.data[0].title.should.equal('Fantastic title');
           res.body.data[0].content.should.equal('Fantastic content');
+          res.body.data[0].status.should.equal('important');
+          res.body.data[0].sort.should.equal(1);
           res.body.data[1].should.be.an('object');
           res.body.data[1].title.should.equal('Another fantastic title');
           res.body.data[1].content.should.equal('Another fantastic content');
+          res.body.data[1].status.should.equal('normal');
+          res.body.data[1].sort.should.equal(2);
           done();
 
         });
@@ -211,6 +239,8 @@ describe('Announcements', () => {
           res.body.data[0].should.be.an('object');
           res.body.data[0].title.should.equal('Fantastic title');
           res.body.data[0].content.should.equal('Fantastic content');
+          res.body.data[0].status.should.equal('important');
+          res.body.data[0].sort.should.equal(1);
           done();
 
         });
@@ -249,9 +279,13 @@ describe('Announcements', () => {
           res.body.data[0].should.be.an('object');
           res.body.data[0].title.should.equal('Fantastic title');
           res.body.data[0].content.should.equal('Fantastic content');
+          res.body.data[0].status.should.equal('important');
+          res.body.data[0].sort.should.equal(1);
           res.body.data[1].should.be.an('object');
           res.body.data[1].title.should.equal('Another fantastic title');
           res.body.data[1].content.should.equal('Another fantastic content');
+          res.body.data[1].status.should.equal('normal');
+          res.body.data[1].sort.should.equal(2);
           done();
 
         });

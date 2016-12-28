@@ -13,7 +13,7 @@ router.get('/list', function(req, res) {
         data: err
       });
     } else {
-      client.query('SELECT * FROM announcements ORDER BY sort ASC', function(err, result) {
+      client.query('SELECT * FROM announcements ORDER BY sort DESC', function(err, result) {
         done();
         if (err) {
           console.error(err);

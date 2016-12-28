@@ -1,10 +1,10 @@
 <template lang="pug">
 #app
   #left-block
-    #news-container
+    #announcement-container
       //img.full(src='/img/infotv.jpg')
 
-      news-item(v-for='item in data.announcements', :item='item')
+      announcement-item(v-for='item in data.announcements', :item='item')
 
   #sidebar
     clock
@@ -18,12 +18,12 @@
 import 'whatwg-fetch';
 
 import Clock    from './clock.vue';
-import NewsItem from './news-item.vue';
+import AnnouncementItem from './announcement-item.vue';
 
 var component = {
   components: {
     'clock': Clock,
-    'news-item': NewsItem
+    'announcement-item': AnnouncementItem
   },
   props: [
     'data'
@@ -92,7 +92,7 @@ html, body, #app
 
   background-color: #E0E0E0;
 
-  #news-container
+  #announcement-container
 
     width  100%
     height 100%

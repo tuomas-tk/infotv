@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.news-item(v-bind:class='statusClass')
+.announcement-item(v-bind:class='statusClass')
   .title
     | {{ item.title }}
   .content
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-.news-item
+.announcement-item
   border-top: 1px solid #AAAAAA
   border-bottom: 1px solid #AAAAAA
   border-right: 1px solid #AAAAAA

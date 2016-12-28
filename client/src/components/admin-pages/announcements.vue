@@ -3,12 +3,24 @@
   .box
     h1 Announcements
 
-    .btn Create new
+    .btn(
+      v-if='!creating',
+      v-on:click='creating = true'
+    ) Create new
+
+    announcement-editable(
+      v-else,
+      v-bind:item='{status: \'normal\'}',
+      v-on:creating-cancelled = 'creating = false'
+      v-on:save = 'create'
+    )
+
 
     announcement-editable(
       v-for='item in announcements',
-      v-bind:item='item',
-      v-on:reload  ='load()'
+      v-bind:item = 'item',
+      v-on:save   = 'save',
+      v-on:remove = 'remove'
     )
 
 
@@ -27,7 +39,8 @@ export default {
   data: function () {
     return {
       announcements: [],
-      error: ''
+      error: '',
+      creating: false
     };
   },
   methods: {
@@ -37,11 +50,85 @@ export default {
     movedown: function (id) {
       console.log('move DOWN: ' + id);
     },
-    edit: function (id) {
-      console.log('edit: ' + id);
+    create: function (item) {
+      console.log('create');
+      this.creating = false;
+
+      var t = this;
+      fetch('/api/announcements/create', {
+        method: 'PUT',
+        body: JSON.stringify({
+          title: item.title,
+          content: item.content,
+          status: item.status
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function(response) {
+          return response.json()
+        }).then(function(json) {
+          if (json.success) {
+            t.load();
+          } else {
+            t.error += 'Server error 20: ' + json.data;
+          }
+        }).catch(function(ex) {
+          console.log('parsing failed', ex)
+          t.error += 'Server error 21';
+        });
+    },
+    save: function (item) {
+      console.log('save');
+      console.log(item);
+
+      var t = this;
+      fetch('/api/announcements/edit', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: item.id,
+          title: item.title,
+          content: item.content,
+          status: item.status,
+          sort: item.sort
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function(response) {
+          return response.json()
+        }).then(function(json) {
+          if (json.success) {
+            t.load();
+          } else {
+            t.error += 'Server error 20: ' + json.data;
+          }
+        }).catch(function(ex) {
+          console.log('parsing failed', ex)
+          t.error += 'Server error 21';
+        });
     },
     remove: function (id) {
-      console.log('remove: ' + id);
+      var t = this;
+      fetch('/api/announcements/delete', {
+        method: 'delete',
+        body: '{"id": "' + id + '"}',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function(response) {
+          return response.json()
+        }).then(function(json) {
+          if (json.success) {
+            console.log('success');
+            t.load();
+          } else {
+            t.error += 'Server error 20: ' + json.data;
+          }
+        }).catch(function(ex) {
+          console.log('parsing failed', ex)
+          t.error += 'Server error 21';
+        });
     },
 
     load: function () {

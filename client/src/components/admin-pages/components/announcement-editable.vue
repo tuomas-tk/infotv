@@ -15,16 +15,20 @@
   .edit(v-else)
     .item(v-bind:class='statusClass')
       .label Title:
-      input(v-model='input_title')
+      input.input-title(v-model='input_title')
       .label Content:
-      textarea(v-model='input_content')
+      textarea.input-content(v-model='input_content')
 
-      input(type='radio' id='status_info' value='info' v-model='input_status')
-      label(for='status_info') Info
-      input(type='radio' id='status_normal' value='normal' v-model='input_status')
-      label(for='status_normal') Normal
-      input(type='radio' id='status_important' value='important' v-model='input_status')
-      label(for='status_important') Important
+      .label Status:
+      .radiorow
+        input(type='radio' id='status_info' value='info' v-model='input_status')
+        label(for='status_info') Info
+      .radiorow
+        input(type='radio' id='status_normal' value='normal' v-model='input_status')
+        label(for='status_normal') Normal
+      .radiorow
+        input(type='radio' id='status_important' value='important' v-model='input_status')
+        label(for='status_important') Important
 
     .actions
       .button(v-on:click='cancel') Cancel
@@ -37,7 +41,7 @@ export default {
   props: ['item'],
   data: function() {
     return {
-      'editing': false,
+      'editing': this.item.id == undefined,
       'input_title': this.item.title,
       'input_content': this.item.content,
       'input_status': this.item.status
@@ -55,65 +59,35 @@ export default {
   methods: {
     edit: function () {
       this.editing = true;
+      this.input_title   = this.item.title;
+      this.input_content = this.item.content;
+      this.input_status  = this.item.status;
     },
     cancel: function () {
       this.editing = false;
+
+      if (this.item.id == undefined) {
+        this.$emit('creating-cancelled');
+      }
     },
     save: function (event) {
-      var t = this;
-      fetch('/api/announcements/edit', {
-        method: 'POST',
-        body: JSON.stringify({
-          id: this.item.id,
-          title: this.input_title,
-          content: this.input_content,
-          status: this.input_status
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(function(response) {
-          return response.json()
-        }).then(function(json) {
-          if (json.success) {
-            t.editing = false;
-            t.$emit('reload');
-          } else {
-            t.error += 'Server error 20: ' + json.data;
-          }
-        }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
-        });
-
+      this.$emit('save', {
+        id: this.item.id,
+        title: this.input_title,
+        content: this.input_content,
+        status: this.input_status,
+        sort: this.item.sort
+      });
+      this.editing = false;
     },
     moveup: function (event) {
-
+      this.$emit('moveup', this.item.id);
     },
     movedown: function (event) {
-
+      this.$emit('movedown', this.item.id);
     },
     remove: function (event) {
-      var t = this;
-      fetch('/api/announcements/delete', {
-        method: 'delete',
-        body: '{"id": "' + this.item.id + '"}',
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(function(response) {
-          return response.json()
-        }).then(function(json) {
-          if (json.success) {
-            console.log('success');
-            t.$emit('reload');
-          } else {
-            t.error += 'Server error 20: ' + json.data;
-          }
-        }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
-        });
+      this.$emit('remove', this.item.id);
     }
   }
 };
@@ -179,6 +153,40 @@ export default {
       &:hover
           text-decoration: underline
           background-color: #D0D0D0
+
+  .edit
+    .item
+      .label
+        font-weight: 600
+        color: #555555
+
+      .input-title, .input-content
+        width: 90%
+        padding: 0.4em 0.4em
+        margin-bottom: 1em
+        font-family: inherit
+
+      .input-title
+        font-size: 1.3em
+        font-weight: 500
+
+      .input-content
+        resize: vertical
+        min-height: 6em
+        font-size: 1.1em
+
+      .radiorow
+        margin-top: 0.5em
+        input
+          vertical-align: -3px
+        label
+          display: inline-block
+          padding-left: 0.4em
+          font-size: 1.1em
+
+    .actions
+      .button
+        width: 50%
 
 
 

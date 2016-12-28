@@ -46,8 +46,6 @@ export default {
 html, body, #app
   padding: 0
   margin: 0
-  height: 100%
-  overflow: hidden
 
 body
   font-family: 'Roboto', sans-serif

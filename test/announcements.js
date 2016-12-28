@@ -54,16 +54,18 @@ describe('Announcements', () => {
       res.body.data.should.be.a('array');
       res.body.data.length.should.be.eql(2);
 
+
       res.body.data[0].should.be.an('object');
-      res.body.data[0].title.should.equal('Fantastic title');
-      res.body.data[0].content.should.equal('Fantastic content');
-      res.body.data[0].status.should.equal('important');
-      res.body.data[0].sort.should.equal(1);
+      res.body.data[0].title.should.equal('Another fantastic title');
+      res.body.data[0].content.should.equal('Another fantastic content');
+      res.body.data[0].status.should.equal('normal');
+      res.body.data[0].sort.should.equal(2);
+
       res.body.data[1].should.be.an('object');
-      res.body.data[1].title.should.equal('Another fantastic title');
-      res.body.data[1].content.should.equal('Another fantastic content');
-      res.body.data[1].status.should.equal('normal');
-      res.body.data[1].sort.should.equal(2);
+      res.body.data[1].title.should.equal('Fantastic title');
+      res.body.data[1].content.should.equal('Fantastic content');
+      res.body.data[1].status.should.equal('important');
+      res.body.data[1].sort.should.equal(1);
       done();
     });
   });
@@ -91,21 +93,24 @@ describe('Announcements', () => {
         res.body.data.should.be.a('array');
         res.body.data.length.should.be.eql(3);
 
+
         res.body.data[0].should.be.an('object');
-        res.body.data[0].title.should.equal('Fantastic title');
-        res.body.data[0].content.should.equal('Fantastic content');
-        res.body.data[0].status.should.equal('important');
-        res.body.data[0].sort.should.equal(1);
+        res.body.data[0].title.should.equal('Created title');
+        res.body.data[0].content.should.equal('Created content');
+        res.body.data[0].status.should.equal('info');
+        res.body.data[0].sort.should.equal(3);
+
         res.body.data[1].should.be.an('object');
         res.body.data[1].title.should.equal('Another fantastic title');
         res.body.data[1].content.should.equal('Another fantastic content');
         res.body.data[1].status.should.equal('normal');
         res.body.data[1].sort.should.equal(2);
+
         res.body.data[2].should.be.an('object');
-        res.body.data[2].title.should.equal('Created title');
-        res.body.data[2].content.should.equal('Created content');
-        res.body.data[2].status.should.equal('info');
-        res.body.data[2].sort.should.equal(3);
+        res.body.data[2].title.should.equal('Fantastic title');
+        res.body.data[2].content.should.equal('Fantastic content');
+        res.body.data[2].status.should.equal('important');
+        res.body.data[2].sort.should.equal(1);
 
         done();
       });
@@ -120,7 +125,7 @@ describe('Announcements', () => {
     chai.request(server) // Get the id of the second announcement
     .get('/api/announcements/list')
     .end((err, res) => {
-      announcement_id = res.body.data[1].id;
+      announcement_id = res.body.data[0].id;
 
 
       chai.request(server) // Edit the announcement to "Edited"
@@ -146,16 +151,18 @@ describe('Announcements', () => {
           res.body.data.should.be.a('array');
           res.body.data.length.should.be.eql(2);
 
+
           res.body.data[0].should.be.an('object');
-          res.body.data[0].title.should.equal('Fantastic title');
-          res.body.data[0].content.should.equal('Fantastic content');
-          res.body.data[0].status.should.equal('important');
-          res.body.data[0].sort.should.equal(1);
+          res.body.data[0].title.should.equal('Edited title');
+          res.body.data[0].content.should.equal('Edited content');
+          res.body.data[0].status.should.equal('info');
+          res.body.data[0].sort.should.equal(3);
+
           res.body.data[1].should.be.an('object');
-          res.body.data[1].title.should.equal('Edited title');
-          res.body.data[1].content.should.equal('Edited content');
-          res.body.data[1].status.should.equal('info');
-          res.body.data[1].sort.should.equal(3);
+          res.body.data[1].title.should.equal('Fantastic title');
+          res.body.data[1].content.should.equal('Fantastic content');
+          res.body.data[1].status.should.equal('important');
+          res.body.data[1].sort.should.equal(1);
           done();
 
         });
@@ -170,7 +177,7 @@ describe('Announcements', () => {
     chai.request(server) // Get the id of the inexisting announcement
     .get('/api/announcements/list')
     .end((err, res) => {
-      announcement_id = res.body.data[1].id + 1;
+      announcement_id = res.body.data[0].id + 1;
 
 
       chai.request(server) // Try to edit the inexisting announcement
@@ -191,16 +198,18 @@ describe('Announcements', () => {
           res.body.data.should.be.a('array');
           res.body.data.length.should.be.eql(2);
 
+
           res.body.data[0].should.be.an('object');
-          res.body.data[0].title.should.equal('Fantastic title');
-          res.body.data[0].content.should.equal('Fantastic content');
-          res.body.data[0].status.should.equal('important');
-          res.body.data[0].sort.should.equal(1);
+          res.body.data[0].title.should.equal('Another fantastic title');
+          res.body.data[0].content.should.equal('Another fantastic content');
+          res.body.data[0].status.should.equal('normal');
+          res.body.data[0].sort.should.equal(2);
+
           res.body.data[1].should.be.an('object');
-          res.body.data[1].title.should.equal('Another fantastic title');
-          res.body.data[1].content.should.equal('Another fantastic content');
-          res.body.data[1].status.should.equal('normal');
-          res.body.data[1].sort.should.equal(2);
+          res.body.data[1].title.should.equal('Fantastic title');
+          res.body.data[1].content.should.equal('Fantastic content');
+          res.body.data[1].status.should.equal('important');
+          res.body.data[1].sort.should.equal(1);
           done();
 
         });
@@ -216,7 +225,7 @@ describe('Announcements', () => {
     chai.request(server) // Get the id of the second announcement
     .get('/api/announcements/list')
     .end((err, res) => {
-      announcement_id = res.body.data[1].id;
+      announcement_id = res.body.data[0].id;
 
 
       chai.request(server) // Delete the announcement
@@ -255,7 +264,7 @@ describe('Announcements', () => {
     chai.request(server) // Get the id of the inexisting announcement
     .get('/api/announcements/list')
     .end((err, res) => {
-      announcement_id = res.body.data[1].id + 1;
+      announcement_id = res.body.data[0].id + 1;
 
 
       chai.request(server) // Delete the inexisting announcement
@@ -276,16 +285,18 @@ describe('Announcements', () => {
           res.body.data.should.be.a('array');
           res.body.data.length.should.be.eql(2);
 
+
           res.body.data[0].should.be.an('object');
-          res.body.data[0].title.should.equal('Fantastic title');
-          res.body.data[0].content.should.equal('Fantastic content');
-          res.body.data[0].status.should.equal('important');
-          res.body.data[0].sort.should.equal(1);
+          res.body.data[0].title.should.equal('Another fantastic title');
+          res.body.data[0].content.should.equal('Another fantastic content');
+          res.body.data[0].status.should.equal('normal');
+          res.body.data[0].sort.should.equal(2);
+
           res.body.data[1].should.be.an('object');
-          res.body.data[1].title.should.equal('Another fantastic title');
-          res.body.data[1].content.should.equal('Another fantastic content');
-          res.body.data[1].status.should.equal('normal');
-          res.body.data[1].sort.should.equal(2);
+          res.body.data[1].title.should.equal('Fantastic title');
+          res.body.data[1].content.should.equal('Fantastic content');
+          res.body.data[1].status.should.equal('important');
+          res.body.data[1].sort.should.equal(1);
           done();
 
         });

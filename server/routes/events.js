@@ -10,7 +10,7 @@ const auth = params.auth.split(':');
 
 const ssl = !(process.env.POSTGRESQLNOSSL=='true');
 
-console.log("SSL: " + ssl);
+console.log('SSL enabled: ' + ssl);
 
 const config = {
   user: auth[0],
@@ -54,7 +54,7 @@ router.put('/create', (req, res) => {
     'title': req.body.title
   };
 
-  pool.query('INSERT INTO events(title) values($1)', [data.title], function(err, result) {
+  pool.query('INSERT INTO events(title) values($1)', [data.title], function(err) {
     if (err) {
       console.error(err);
       return res.status(500).json({

@@ -66,7 +66,7 @@ export default {
         this.$emit('creating-cancelled');
       }
     },
-    save: function (event) {
+    save: function () {
       this.$emit('save', {
         id: this.item.id,
         title: this.input_title,
@@ -76,13 +76,13 @@ export default {
       });
       this.editing = false;
     },
-    moveup: function (event) {
+    moveup: function () {
       this.$emit('moveup', this.item.id);
     },
-    movedown: function (event) {
+    movedown: function () {
       this.$emit('movedown', this.item.id);
     },
-    remove: function (event) {
+    remove: function () {
       this.$emit('remove', this.item.id);
     }
   }

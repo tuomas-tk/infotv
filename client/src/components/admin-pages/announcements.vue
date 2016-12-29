@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import VueRouter from 'vue-router';
 import AnnouncementEditable from './components/announcement-editable.vue';
 
 var timeoutID;
@@ -49,7 +48,6 @@ export default {
   },
   methods: {
     moveup: function (up_id) {
-      console.log('move UP: ' + up_id);
       var up_item, down_item;
 
       for (var i=1; i < this.announcements.length; i++) { // Finding the actual items
@@ -64,7 +62,6 @@ export default {
 
     },
     movedown: function (down_id) {
-      console.log('move DOWN: ' + down_id);
       var up_item, down_item;
 
       for (var i=0; i < this.announcements.length-1; i++) { // Finding the actual items
@@ -107,19 +104,19 @@ export default {
           content: item.content,
           status: item.status
         }),
-        headers: {"Content-Type": "application/json"}
+        headers: {'Content-Type': 'application/json'}
       }).then(function(response) {
-          return response.json()
-        }).then(function(json) {
-          if (json.success) {
-            t.load();
-            t.$emit('clearerror', [510, 511]);
-          } else {
-            t.$emit('adderror', {code: 510, data: json.data});
-          }
-        }).catch(function(ex) {
-          t.$emit('adderror', {code: 511, data: 'Creating failed (Can\'t connect to server)'});
-        });
+        return response.json();
+      }).then(function(json) {
+        if (json.success) {
+          t.load();
+          t.$emit('clearerror', [510, 511]);
+        } else {
+          t.$emit('adderror', {code: 510, data: json.data});
+        }
+      }).catch(function() {
+        t.$emit('adderror', {code: 511, data: 'Creating failed (Can\'t connect to server)'});
+      });
     },
     save: function (item) {
       console.log('save');
@@ -135,42 +132,38 @@ export default {
           status: item.status,
           sort: item.sort
         }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: {'Content-Type': 'application/json'}
       }).then(function(response) {
-          return response.json()
-        }).then(function(json) {
-          if (json.success) {
-            t.load();
-            t.$emit('clearerror', [520, 521]);
-          } else {
-            t.$emit('adderror', {code: 520, data: json.data});
-          }
-        }).catch(function(ex) {
-          t.$emit('adderror', {code: 521, data: 'Saving failed (Can\'t connect to server)'});
-        });
+        return response.json();
+      }).then(function(json) {
+        if (json.success) {
+          t.load();
+          t.$emit('clearerror', [520, 521]);
+        } else {
+          t.$emit('adderror', {code: 520, data: json.data});
+        }
+      }).catch(function() {
+        t.$emit('adderror', {code: 521, data: 'Saving failed (Can\'t connect to server)'});
+      });
     },
     remove: function (id) {
       var t = this;
       fetch('/api/announcements/delete', {
         method: 'delete',
         body: '{"id": "' + id + '"}',
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: {'Content-Type': 'application/json'}
       }).then(function(response) {
-          return response.json()
-        }).then(function(json) {
-          if (json.success) {
-            t.load();
-            t.$emit('clearerror', [530, 531]);
-          } else {
-            t.$emit('adderror', {code: 530, data: json.data});
-          }
-        }).catch(function(ex) {
-          t.$emit('adderror', {code: 531, data: 'Deleting failed (Can\'t connect to server)'});
-        });
+        return response.json();
+      }).then(function(json) {
+        if (json.success) {
+          t.load();
+          t.$emit('clearerror', [530, 531]);
+        } else {
+          t.$emit('adderror', {code: 530, data: json.data});
+        }
+      }).catch(function() {
+        t.$emit('adderror', {code: 531, data: 'Deleting failed (Can\'t connect to server)'});
+      });
     },
 
     load: function () {
@@ -183,8 +176,7 @@ export default {
 
       fetch('/api/announcements/list')
         .then(function(response) {
-          return response.json()
-
+          return response.json();
         }).then(function(json) {
           if (json.success) {
             t.announcements = json.data;
@@ -194,7 +186,7 @@ export default {
             t.$emit('adderror', {code: 500, data: json.data});
           }
 
-        }).catch(function(ex) {
+        }).catch(function() {
           t.announcements = {};
           t.$emit('adderror', {code: 501, data: 'Can\'t connect to server'});
 

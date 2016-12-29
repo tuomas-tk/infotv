@@ -42,7 +42,7 @@ router.put('/create', (req, res) => {
     content: req.body.content,
     status: req.body.status || 'normal',
     sort: 0
-  }
+  };
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     if (err) {
@@ -69,7 +69,7 @@ router.put('/create', (req, res) => {
             data.sort = result.rows[0].sort + 1;
           }
 
-          client.query('INSERT INTO announcements(title, content, status, sort) values($1, $2, $3, $4)', [data.title, data.content, data.status, data.sort], function(err, result) {
+          client.query('INSERT INTO announcements(title, content, status, sort) values($1, $2, $3, $4)', [data.title, data.content, data.status, data.sort], function(err) {
             done();
             if (err) {
               console.error(err);
@@ -85,7 +85,7 @@ router.put('/create', (req, res) => {
 
 
         }
-      })
+      });
     }
 
   });

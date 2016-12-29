@@ -23,12 +23,12 @@ const routes = [
     path: '/preview',
     component: Preview
   }
-]
+];
 
 
 const router = new VueRouter({
   routes: routes
-})
+});
 
 
 new Vue({

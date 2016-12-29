@@ -10,10 +10,6 @@
 
 ---
 
-## This is a school project, please contact before contributing!
-
----
-
 
 ## Developing
 

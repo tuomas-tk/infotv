@@ -3,7 +3,7 @@
   .box
     h1 Announcements
 
-    .btn(
+    .btn.btn-blue(
       v-if='!creating',
       v-on:click='creating = true'
     ) Create new
@@ -15,6 +15,7 @@
       v-on:save = 'create'
     )
 
+    hr
 
     announcement-editable(
       v-for='item in announcements',
@@ -39,7 +40,6 @@ export default {
   data: function () {
     return {
       announcements: [],
-      error: '',
       creating: false
     };
   },
@@ -51,10 +51,9 @@ export default {
       console.log('move DOWN: ' + id);
     },
     create: function (item) {
-      console.log('create');
       this.creating = false;
-
       var t = this;
+
       fetch('/api/announcements/create', {
         method: 'PUT',
         body: JSON.stringify({
@@ -62,20 +61,18 @@ export default {
           content: item.content,
           status: item.status
         }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers: {"Content-Type": "application/json"}
       }).then(function(response) {
           return response.json()
         }).then(function(json) {
           if (json.success) {
             t.load();
+            t.$emit('clearerror', [510, 511]);
           } else {
-            t.error += 'Server error 20: ' + json.data;
+            t.$emit('adderror', {code: 510, data: json.data});
           }
         }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
+          t.$emit('adderror', {code: 511, data: 'Creating failed (Can\'t connect to server)'});
         });
     },
     save: function (item) {
@@ -100,12 +97,12 @@ export default {
         }).then(function(json) {
           if (json.success) {
             t.load();
+            t.$emit('clearerror', [520, 521]);
           } else {
-            t.error += 'Server error 20: ' + json.data;
+            t.$emit('adderror', {code: 520, data: json.data});
           }
         }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
+          t.$emit('adderror', {code: 521, data: 'Saving failed (Can\'t connect to server)'});
         });
     },
     remove: function (id) {
@@ -120,20 +117,18 @@ export default {
           return response.json()
         }).then(function(json) {
           if (json.success) {
-            console.log('success');
             t.load();
+            t.$emit('clearerror', [530, 531]);
           } else {
-            t.error += 'Server error 20: ' + json.data;
+            t.$emit('adderror', {code: 530, data: json.data});
           }
         }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
+          t.$emit('adderror', {code: 531, data: 'Deleting failed (Can\'t connect to server)'});
         });
     },
 
     load: function () {
       var t = this;
-      this.error = '';
       console.log('loading...');
 
       if (timeoutID != undefined) {
@@ -143,46 +138,39 @@ export default {
       fetch('/api/announcements/list')
         .then(function(response) {
           return response.json()
+
         }).then(function(json) {
           if (json.success) {
             t.announcements = json.data;
+            t.$emit('clearerror', [500, 501]);
           } else {
-            t.error += 'Server error 20: ' + json.data;
+            t.announcements = {};
+            t.$emit('adderror', {code: 500, data: json.data});
           }
+
         }).catch(function(ex) {
-          console.log('parsing failed', ex)
-          t.error += 'Server error 21';
+          t.announcements = {};
+          t.$emit('adderror', {code: 501, data: 'Can\'t connect to server'});
+
+        }).then(function() {
+          timeoutID = setTimeout(t.load, 10000);
         });
 
-      timeoutID = setTimeout(this.load, 10000);
     }
   },
   mounted: function () {
     this.load();
+  },
+  beforeRouteLeave: function (to, from, next) {
+    if (timeoutID != undefined) {
+      clearTimeout(timeoutID);
+    }
+    next();
   }
 };
 
 </script>
 
 <style scoped>
-
-.btn
-  display: inline-block
-  // background-color: #0088b3
-  border: 4px solid #0193c2
-  border-radius: 2em
-  padding: 0 1em
-  line-height: 2em
-  margin-bottom: 2em
-  font-size: 1.2em
-  color: #444444
-  font-weight: 600
-
-  cursor: pointer
-
-  &:hover
-    background-color: #c8e9f4
-    text-decoration: underline
-
 
 </style>

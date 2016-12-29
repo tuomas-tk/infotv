@@ -9,7 +9,20 @@
       router-link(to='/events') Events
       router-link(to='/preview') Preview the screen
 
-  router-view
+  router-view(
+    v-on:adderror   = 'addError'
+    v-on:clearerror = 'clearError'
+  )
+
+  transition(name='fade')
+    #error(v-if='errors.length > 0')
+      .box
+        h2(v-for='err in errors')
+          | Error {{ err.code }}: {{ err.data }}
+
+        p If this error happens often, please contact support.
+
+        .btn.btn-blue(v-on:click='errors = []') OK
 
 </template>
 
@@ -19,26 +32,27 @@ import VueRouter from 'vue-router';
 export default {
   data: function () {
     return {
-      message: 'Hello Vue!',
-      items: [
-        {
-          status: 'important',
-          title: 'Muistakaa!',
-          content: 'Huomenna tapahtuu jotain tärkeää!!'
-        },
-        {
-          status: 'normal',
-          title: 'Normaalin tason ilmoitus',
-          content: ''
-        },
-        {
-          status: 'info',
-          title: 'OPKH kokous',
-          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
-        }
-      ]
+      errors: [{code: 100, data: 'App is not verified!'}]
     };
+  },
+  methods: {
+    addError: function (data) {
+      this.clearError([data.code]);
+      this.errors.push({code: data.code, data: data.data});
+    },
+    clearError: function (data) {
+      for (var data_i=0; data_i < data.length; data_i++) {
+
+        for (var i=0; i < this.errors.length; i++) {
+          if (this.errors[i].code === data[data_i]) {
+            this.errors.splice(i, 1);
+          }
+        }
+
+      }
+    }
   }
+
 };
 </script>
 
@@ -119,6 +133,78 @@ body
     color: #333333
     font-weight: 400
     font-size: 1.5em
+
+
+#error
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  background-color: rgba(0, 0, 0, 0.2)
+
+  .box
+    position: fixed
+    width: 50%
+    top: 20%
+    left: 25%
+
+    padding: 1em 2em 2em 2em
+
+    background-color: #FFFFFF
+    border: 1px solid #AAAAAA
+    border-radius: 0.5em
+    box-shadow: 0 0.5em 2em -2px rgba(0,0,0,0.5)
+
+    h2
+      font-size: 1.5em
+      color: #444444
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+
+hr
+  border: 0
+  border-top: 3px solid #E0E0E0
+  margin-top: 1em
+  margin-bottom: 2em
+
+
+.btn
+  display: inline-block
+  cursor: pointer
+  padding: 0.4em 1.2em
+  margin: 1em 0
+
+  box-shadow: 0 0.1em 0.4em -2px rgba(0,0,0,0.5)
+  border-radius: 0.2em
+  border: 1px solid #000000
+
+  font-weight: 400
+
+  &:hover
+    text-decoration: underline;
+    box-shadow: 0 0.1em 0.2em -2px rgba(0,0,0,0.5), 0 0 0.5em rgba(0,0,0,0.2) inset
+
+  font-size: 1.3em
+  &.btn-small
+    font-size: 1em
+  &.btn-large
+    font-size: 1.6em
+
+  &.btn-blue
+    background-color: #008cff
+    border-color: #0573cd
+    color: #FFFFFF
+
+    &:hover
+      background-color: #097ede
+      border-color: #0466b6
+
 
 
 </style>

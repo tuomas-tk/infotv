@@ -7,10 +7,10 @@
       .content
         | {{ item.content }}
     .actions
-      .button(v-on:click='moveup') Move up
-      .button(v-on:click='edit') Edit
-      .button(v-on:click='remove') Delete
-      .button(v-on:click='movedown') Move down
+      .action(v-on:click='moveup') Move up
+      .action(v-on:click='edit') Edit
+      .action(v-on:click='remove') Delete
+      .action(v-on:click='movedown') Move down
 
   .edit(v-else)
     .item(v-bind:class='statusClass')
@@ -31,8 +31,8 @@
         label(for='status_important') Important
 
     .actions
-      .button(v-on:click='cancel') Cancel
-      .button(v-on:click='save') Save
+      .action(v-on:click='cancel') Cancel
+      .action(v-on:click='save') Save
 
 </template>
 
@@ -49,11 +49,7 @@ export default {
   },
   computed: {
     statusClass: function() {
-      if (!this.editing) {
-        return this.item.status;
-      } else {
-        return this.input_status;
-      }
+      return this.editing ? this.input_status : this.item.status;
     }
   },
   methods: {
@@ -138,7 +134,7 @@ export default {
 
     overflow: hidden
 
-    .button
+    .action
       display: inline-block
       width: 25%
 
@@ -185,12 +181,7 @@ export default {
           font-size: 1.1em
 
     .actions
-      .button
+      .action
         width: 50%
-
-
-
-
-
 
 </style>

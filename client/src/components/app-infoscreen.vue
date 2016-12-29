@@ -4,13 +4,21 @@
     #announcement-container
       //img.full(src='/img/infotv.jpg')
 
-      announcement-item(v-for='item in data.announcements', :item='item')
+      announcement-item(v-for='item in announcements', :item='item')
 
   #sidebar
     clock
 
   #bottom-bar
     | {{ message }}
+
+  transition(name='fade')
+    #error(v-if='error')
+      .box
+        h2 {{ error }}
+        p This message will disappear automatically when connection to the server is possible
+        p If this error happens often, please contact support.
+
 
 </template>
 
@@ -25,45 +33,53 @@ var component = {
     'clock': Clock,
     'announcement-item': AnnouncementItem
   },
-  props: [
-    'data'
-  ],
   data: function () {
     return {
       message: 'Hello Vue!',
-      items: [/*
-        {
-          status: 'important',
-          title: 'Muistakaa!',
-          content: 'Huomenna tapahtuu jotain tärkeää!!'
-        },
-        {
-          status: 'normal',
-          title: 'Normaalin tason ilmoitus',
-          content: ''
-        },
-        {
-          status: 'info',
-          title: 'OPKH kokous',
-          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
-        },
-        {
-          status: 'info',
-          title: 'OPKH kokous',
-          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
-        },
-        {
-          status: 'info',
-          title: 'OPKH kokous',
-          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
-        },
-        {
-          status: 'info',
-          title: 'OPKH kokous',
-          content: 'Luokassa 2 klo 12:00 Tää on vaan semmonen ei kovin tärkeä asia.'
-        }
-      */]
+      announcements: [],
+      events: [],
+      error: ''
     };
+  },
+  methods: {
+    load: function () {
+      var t = this;
+      console.log('loading...');
+
+      fetch('/api/events/list')
+        .then(function(response) {
+          return response.json();
+        }).then(function(json) {
+          if (json.success) {
+            t.events = json.data;
+            t.error = '';
+          } else {
+            t.error = 'Server error 10: ' + json.data;
+          }
+        }).catch(function() {
+          t.error = 'Can\'t connect to the server';
+        });
+
+      fetch('/api/announcements/list')
+        .then(function(response) {
+          return response.json();
+        }).then(function(json) {
+          if (json.success) {
+            t.announcements = json.data;
+            t.error = '';
+          } else {
+            t.error = 'Server error 20: ' + json.data;
+          }
+        }).catch(function() {
+          t.error = 'Can\'t connect to the server';
+        }).then(function() {
+          setTimeout(t.load, 20000);
+        });
+
+    }
+  },
+  mounted: function () {
+    this.load();
   }
 };
 
@@ -122,5 +138,40 @@ html, body, #app
 
   background-color: #555555;
   color: #FFFFFF;
+
+
+#error
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  background-color: rgba(0, 0, 0, 0.2)
+
+  .box
+    position: fixed
+    width: 50%
+    top: 25%
+    left: 25%
+
+    padding: 1em 2em 2em 2em
+
+    background-color: #FFFFFF
+    border: 1px solid #AAAAAA
+    border-radius: 0.5em
+    box-shadow: 0 0.5em 2em -2px rgba(0,0,0,0.5)
+
+    h2
+      font-size: 2em
+      color: #444444
+    p
+      font-size: 1.5em
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
 
 </style>

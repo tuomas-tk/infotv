@@ -7,10 +7,10 @@
       .content
         | {{ item.content }}
     .actions
-      .button(v-on:click='moveup') Move up
-      .button(v-on:click='edit') Edit
-      .button(v-on:click='remove') Delete
-      .button(v-on:click='movedown') Move down
+      .action(@click='moveup', v-bind:class='{disabled: firstlast.first}') Move up
+      .action(@click='edit') Edit
+      .action(@click='remove') Delete
+      .action(@click='movedown', v-bind:class='{disabled: firstlast.last}') Move down
 
   .edit(v-else)
     .item(v-bind:class='statusClass')
@@ -31,14 +31,14 @@
         label(for='status_important') Important
 
     .actions
-      .button(v-on:click='cancel') Cancel
-      .button(v-on:click='save') Save
+      .action(@click='cancel') Cancel
+      .action(@click='save') Save
 
 </template>
 
 <script>
 export default {
-  props: ['item'],
+  props: ['item', 'firstlast'],
   data: function() {
     return {
       'editing': this.item.id == undefined,
@@ -49,11 +49,7 @@ export default {
   },
   computed: {
     statusClass: function() {
-      if (!this.editing) {
-        return this.item.status;
-      } else {
-        return this.input_status;
-      }
+      return this.editing ? this.input_status : this.item.status;
     }
   },
   methods: {
@@ -70,7 +66,7 @@ export default {
         this.$emit('creating-cancelled');
       }
     },
-    save: function (event) {
+    save: function () {
       this.$emit('save', {
         id: this.item.id,
         title: this.input_title,
@@ -80,13 +76,13 @@ export default {
       });
       this.editing = false;
     },
-    moveup: function (event) {
+    moveup: function () {
       this.$emit('moveup', this.item.id);
     },
-    movedown: function (event) {
+    movedown: function () {
       this.$emit('movedown', this.item.id);
     },
-    remove: function (event) {
+    remove: function () {
       this.$emit('remove', this.item.id);
     }
   }
@@ -138,7 +134,7 @@ export default {
 
     overflow: hidden
 
-    .button
+    .action
       display: inline-block
       width: 25%
 
@@ -151,8 +147,16 @@ export default {
       cursor: pointer
 
       &:hover
-          text-decoration: underline
-          background-color: #D0D0D0
+        text-decoration: underline
+        background-color: #D0D0D0
+
+      &.disabled
+        color: #AAAAAA
+        cursor: default
+        &:hover
+          text-decoration: none
+          background-color: #E0E0E0
+
 
   .edit
     .item
@@ -185,12 +189,7 @@ export default {
           font-size: 1.1em
 
     .actions
-      .button
+      .action
         width: 50%
-
-
-
-
-
 
 </style>

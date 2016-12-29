@@ -32,7 +32,7 @@
   "scripts": {
     "lint:server": "eslint server/routes",
     "lint:client": "eslint client/src/**/*.{js,vue}",
-    "lint": "npm run lint:server && npm run lint:client",
+    "lint": "npm run lint:server; npm run lint:client",
     "test": "mocha --timeout 10000",
     "webpack": "webpack",
     "webpack:watch": "webpack --watch",

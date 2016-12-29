@@ -5,23 +5,27 @@
 
     .btn.btn-blue(
       v-if='!creating',
-      v-on:click='creating = true'
+      @click='creating = true'
     ) Create new
 
     announcement-editable(
       v-else,
-      v-bind:item='{status: \'normal\'}',
-      v-on:creating-cancelled = 'creating = false'
-      v-on:save = 'create'
+      :item='{status: \'normal\'}',
+      @creating-cancelled = 'creating = false'
+      @save = 'create'
     )
 
     hr
 
     announcement-editable(
-      v-for='item in announcements',
-      v-bind:item = 'item',
-      v-on:save   = 'save',
-      v-on:remove = 'remove'
+      v-for='(item, index) in announcements',
+      :item = 'item',
+      :firstlast = '{first: index === 0, last: index === announcements.length-1}',
+      :key = 'item.id',
+      @save   = 'save',
+      @remove = 'remove',
+      @moveup = 'moveup',
+      @movedown = 'movedown'
     )
 
 
@@ -44,12 +48,54 @@ export default {
     };
   },
   methods: {
-    moveup: function (id) {
-      console.log('move UP: ' + id);
+    moveup: function (up_id) {
+      console.log('move UP: ' + up_id);
+      var up_item, down_item;
+
+      for (var i=1; i < this.announcements.length; i++) { // Finding the actual items
+        if (this.announcements[i].id === up_id) {
+          up_item = this.announcements[i];
+          down_item = this.announcements[i-1];
+          break;
+        }
+      }
+      if (up_item == undefined || down_item == undefined) return; // if item not found -> cancel
+      this.moveupanddown(up_item, down_item);
+
     },
-    movedown: function (id) {
-      console.log('move DOWN: ' + id);
+    movedown: function (down_id) {
+      console.log('move DOWN: ' + down_id);
+      var up_item, down_item;
+
+      for (var i=0; i < this.announcements.length-1; i++) { // Finding the actual items
+        if (this.announcements[i].id === down_id) {
+          down_item = this.announcements[i];
+          up_item = this.announcements[i+1];
+          break;
+        }
+      }
+      if (up_item == undefined || down_item == undefined) return; // if item not found -> cancel
+      this.moveupanddown(up_item, down_item);
     },
+    moveupanddown: function (up_item, down_item) {
+      this.save({ // Saving up_item
+        id:     up_item.id,
+        title:  up_item.title,
+        content:up_item.content,
+        status: up_item.status,
+        sort: down_item.sort       // !!
+      });
+      this.save({ // Saving down_item
+        id:     down_item.id,
+        title:  down_item.title,
+        content:down_item.content,
+        status: down_item.status,
+        sort:     up_item.sort     // !!
+      });
+    },
+
+
+
     create: function (item) {
       this.creating = false;
       var t = this;

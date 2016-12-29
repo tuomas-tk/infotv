@@ -7,10 +7,10 @@
       .content
         | {{ item.content }}
     .actions
-      .action(v-on:click='moveup') Move up
-      .action(v-on:click='edit') Edit
-      .action(v-on:click='remove') Delete
-      .action(v-on:click='movedown') Move down
+      .action(@click='moveup', v-bind:class='{disabled: firstlast.first}') Move up
+      .action(@click='edit') Edit
+      .action(@click='remove') Delete
+      .action(@click='movedown', v-bind:class='{disabled: firstlast.last}') Move down
 
   .edit(v-else)
     .item(v-bind:class='statusClass')
@@ -31,14 +31,14 @@
         label(for='status_important') Important
 
     .actions
-      .action(v-on:click='cancel') Cancel
-      .action(v-on:click='save') Save
+      .action(@click='cancel') Cancel
+      .action(@click='save') Save
 
 </template>
 
 <script>
 export default {
-  props: ['item'],
+  props: ['item', 'firstlast'],
   data: function() {
     return {
       'editing': this.item.id == undefined,
@@ -147,8 +147,16 @@ export default {
       cursor: pointer
 
       &:hover
-          text-decoration: underline
-          background-color: #D0D0D0
+        text-decoration: underline
+        background-color: #D0D0D0
+
+      &.disabled
+        color: #AAAAAA
+        cursor: default
+        &:hover
+          text-decoration: none
+          background-color: #E0E0E0
+
 
   .edit
     .item

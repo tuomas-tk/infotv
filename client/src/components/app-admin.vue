@@ -32,7 +32,7 @@ import VueRouter from 'vue-router';
 export default {
   data: function () {
     return {
-      errors: [{code: 100, data: 'App is not verified!'}]
+      errors: []
     };
   },
   methods: {
